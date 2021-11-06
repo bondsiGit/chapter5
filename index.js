@@ -1,7 +1,7 @@
 //import module
 const express = require('express')
 const app = express()
-const port = 50
+const port = 5050
 
 //set view engine
 app.set('views', './view')
@@ -17,6 +17,28 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(logger)
 app.use('/asset', express.static('asset'))
+
+//users
+const users = [
+    { 
+        name:"test", 
+        password:"123" 
+    }
+]
+
+app.post('/login', (req, res) => {
+    const { name, password } = req.body
+    let userName = users.find(i => i.name === name)
+    let userPassword = users.find(i => i.password === password)
+    
+    if (userName && userPassword) {
+        res.json(userName)
+    } else if (userName && !userPassword) {
+        res.json("password salah !!")
+    } else {
+        res.json("username salah !!")
+    }
+})
 
 //route
 const router = require('./router')
